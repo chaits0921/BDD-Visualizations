@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<!-- your webpage info goes here -->
+
+    <title>Project</title>
+	
+	<meta name="author" content="AP and CV" />
+	<meta name="description" content="" />
+
+<!-- you should always add your stylesheet (css) in the head tag so that it starts loading before the page html is being displayed -->	
+	<link rel="stylesheet" href="{{ url_for('static', filename = 'style.css') }}" type="text/css" />
+	<script src="{{ url_for('static', filename = 'proplog/proplog_parse.js') }}"></script>
+	<script>
+
+		function run(){
+			exp = document.getElementById("expr").value;
+			order = document.getElementById("order").value;
+			exp = exp.split('&').join('*');
+			console.log(exp);
+			var oReq = new XMLHttpRequest();
+			oReq.open("get", 'http://localhost:5000/get_robdd_reorder_image?expr=' + exp + "&order=" + order, true );        
+			oReq.responseType = "blob";
+			oReq.onreadystatechange = function(){
+			if (this.readyState == 4 && this.status == 200){
+
+				var img = document.getElementById('robdd');
+				var url = window.URL || window.webkitURL;
+				img.src = url.createObjectURL(this.response);
+				}
+			}
+			oReq.send();
+
+			var oReqOrder = new XMLHttpRequest();
+			oReqOrder.open("get", 'http://localhost:5000/get_robdd_reorder_special_image?expr=' + exp + "&order=" + order, true );        
+			oReqOrder.responseType = "blob";
+			oReqOrder.onreadystatechange = function(){
+			if (this.readyState == 4 && this.status == 200){
+
+				var img = document.getElementById('robdd_order');
+				var url = window.URL || window.webkitURL;
+				img.src = url.createObjectURL(this.response);
+				}
+			}
+			oReqOrder.send();
+		}
+
+	</script>
+	
+</head>
+<body>
+
+<!-- webpage content goes here in the body -->
+
+	<div id="page">
+		<div id="logo">
+			<h1>Project</h1>
+		</div>
+		
+		<div id="content">
+			 <fieldset>
+        <legend>Input</legend>
+        <p>
+          <label>Enter the Expression</label>
+          <input type = "text"
+                 id = "expr"
+                 value = "" />
+        </p>
+        <p>
+          <label>Ordering</label>
+          <input type = "text"
+                  id = "order"
+                  value = "" />
+        </p>
+       <button type="submit" value="Submit" onclick="run()">Submit</button>
+
+      </fieldset>
+    </form>
+	<pre>
+	Key: Left-> Without ordering taken into consideration.
+	     Right-> With ordering taken into consideration.
+	</pre>
+    <fieldset>
+        <legend>Output</legend>
+
+        <div class="boxed" > 
+			<img id="robdd">
+		</div> 
+
+		<div class="boxed1">
+  			<img id="robdd_order">
+		</div> 
+
+	</fieldset>
+
+    
+		</div>
+		<div id="footer">
+			<p>
+				Summer Project 2017
+			</p>
+		</div>
+
+	</div>
+</body>
+</html>

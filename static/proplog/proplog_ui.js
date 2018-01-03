@@ -1,7 +1,7 @@
 
 
 (function(exports) {
-"use strict";
+
 	// ====== module start =========
 	
 	// configuration for printing to html:
@@ -20,10 +20,7 @@
 		
 		Takes:
 			txt - the propositional problem in DIMACS or formula syntax
-			solver_algorithm - one of "dpll_better","dpll_naive",
-				"truth_table_naive","truth_table_better","resolution_naive","resolution_better"
-			trace_method - one of "none", "html", "text", "console"
-		
+			solver_algorithm - "dpll_better"
 		Does:
 			- calls parsers and converters on the input txt
 			- runs the selected prover on the parsed and converted txt
@@ -37,6 +34,7 @@
 	}  
 
 	function solve_aux(txt,solver_algorithm,trace_method) {
+		console.log("solve_aux");
 		var parsed,converted,maxvar,clauses,origvars,i,res,txt,stats,res;
 		start_time=new Date().getTime();  
 		parsed=proplog_parse.parse(txt);
@@ -94,6 +92,7 @@
 	}
 
 	function build_aux(txt,build_select) {
+		console.log("build_aux");
 		var res;
 		start_time=new Date().getTime();  
 		if (!txt) {
@@ -101,6 +100,7 @@
 			return;
 		}
 		res=proplog_parse.parse(txt);
+		console.log(res);
 		//show_process("parsing finished");
 		if (res[0]==="error") {
 			show_result("Parse error: "+res[1]);
@@ -111,7 +111,11 @@
 				res.shift();
 			} 
 			res=JSON.stringify(res);
+			console.log(res);
 			res=res.replace(/"/g,"")
+			console.log(res);
+			result = res;
+			console.log("Test" + result);
 			//res=proplog_convert.parsed_print(res,[]);    
 		} else if (build_select=="truth_table") {
 				res=proplog_convert.print_truthtable(res);

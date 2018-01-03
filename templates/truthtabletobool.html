@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<!-- your webpage info goes here -->
+
+    <title>Truth table to Boolean Expression</title>
+	
+	<meta name="author" content="AP and CV" />
+	<meta name="description" content="" />
+
+<!-- you should always add your stylesheet (css) in the head tag so that it starts loading before the page html is being displayed -->	
+	<link rel="stylesheet" href="{{ url_for('static', filename = 'style.css') }}" type="text/css" />
+	
+  <script>
+		function run(){
+			var ttvalues = document.getElementById("ttvalues").value;
+			var x = document.getElementById("x").value;
+			var oReq = new XMLHttpRequest();
+			oReq.open("get", 'http://localhost:5000/get_expr_from_tt?ttvalues=' + ttvalues + '&x=' + x, true );        
+			oReq.onreadystatechange = function(){
+			if (this.readyState == 4 && this.status == 200){
+
+				var op = document.getElementById('output');
+				console.log(oReq.responseText);
+				op.innerHTML = oReq.responseText;
+				}
+			}
+			oReq.send();
+		}
+	</script>
+</head>
+<body>
+
+<!-- webpage content goes here in the body -->
+
+	<div id="page">
+		<div id="logo">
+			<h1>Boolean Algebra</h1>
+		</div>
+		
+		<div id="content">
+
+		<fieldset>
+        <legend>Input</legend>
+        <p>
+          <label>Enter number of variables</label>
+          <input type = "text"
+                 id = "x"
+                 value = "" />
+        </p>
+        <p>
+          <label>Enter values of the function's truth table</label>
+          <input type = "text"
+                  id = "ttvalues"
+                  value = "" />
+        </p>
+       
+       <button type="submit" value="Submit" onclick="run()">Submit</button>
+      
+
+      </fieldset>
+
+
+    </form>
+
+    <br><br>
+
+    <fieldset>
+        <legend>Output - Boolean expression of the input function</legend>
+
+      	<div id = "output">
+		</div>
+
+	</fieldset>
+
+    
+		</div>
+		<div id="footer">
+			<p>
+				Summer Project 2017
+			</p>
+		</div>
+
+	</div>
+</body>
+</html>
